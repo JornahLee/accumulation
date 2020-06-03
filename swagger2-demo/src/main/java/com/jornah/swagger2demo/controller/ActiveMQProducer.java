@@ -26,46 +26,21 @@ public class ActiveMQProducer {
 
 
     @ApiOperation(value = "1连接线路",
-            notes = "向服务端发起连接线路请求，本接口只适用于客户端在不登陆的情况下连接免费线路；<br/>" +
-                    "服务端成功返回线路的连接配置后客户端方可正式连接，其中config部分通过先AES加密，然后BASE64编码而成；<br/>" +
-                    "客户端在得到这个配置后，应将data字段的值先然后BASE64解码，然后再用AES算法解密，解密的key请联系后端管理人员；<br/>" +
-                    "注意，在正常返回时，Response中的meta元素可能包含如下节点：<ul>" +
-                    "<li>protocol (required): 建议客户端应采用的协议，值SS为ShadowSocks协议，值OPENVPN为OpenVPN协议；</li>" +
-                    "<li>source (optional): 代表当前发起连接请求的客户所在的国家码，这是根据用户的请求IP的计算出来的，如CN、US；</li>" +
-                    "<li>target (optional): 线路所在的国家码，如CN；</li>" +
-                    "</ul>",
-            hidden = true)
-    @PostMapping(value = {"/channels/{id:\\-1|\\d+}/connect/without-authorizing", "/channels/{id:\\-1|\\d+}/connect2"},
+            notes = "1111")
+    @PostMapping(value = { "/channels/{id:\\-1|\\d+}/connect12312312","asdasdasdasd"},
             produces = APPLICATION_JSON_VALUE, headers = "api-version=v1.0")
     public String sendText(@PathVariable String id) {
+        System.out.println("--licg---     fucntion1 :     -----");
 
         return "SUCESS";
     }
 
     @ApiOperation(value = "123连接线路",
-            notes = "向服务端发起连接线路请求，服务端会做一些验证以及数据状态改变和统计操作；<br/>" +
-                    "当用户没有超过最大连接台数的时候，服务器端会返回线路的连接配置，否则只会返回meta里面的信息<br/>" +
-                    "服务端成功返回线路的连接配置后客户端方可正式连接，其中config部分通过先AES加密，然后BASE64编码而成；<br/>" +
-                    "客户端在得到这个配置后，应将data字段的值先然后BASE64解码，然后再用AES算法解密，解密的key请联系后端管理人员；<br/>" +
-                    "注意，在正常返回时，Response中的meta元素可能包含如下节点：<ul>" +
-                    "<li>protocol (required): 建议客户端应采用的协议，值SS为ShadowSocks协议，值OPENVPN为OpenVPN协议；</li>" +
-                    "<li>source (optional): 代表当前发起连接请求的客户所在的国家码，这是根据用户的请求IP的计算出来的，如CN、US；</li>" +
-                    "<li>target (optional): 线路所在的国家码，如CN；</li>" +
-                    "<li>deviceName (optional)：最早连接的设备名称，如1435435435353545345；</li>" +
-                    "<li>deviceToken (optional)：最早连接的设备token，能唯一标识一台设备；</li>" +
-                    "<li>deviceType (optional)：最早连接的设备类型；</li>" +
-                    "<li>deviceCount (required)：用户可同时登录设备的台数；</li>" +
-                    "<li>activeDeviceCount (required)：用户可同时登录设备的台数；</li>" +
-                    "<li>isReachMaxLimit (required)：是否达到最大连接连接台数；</li>" +
-                    "<li>smartConnectionChannelId (required)：智能连接线路ID；</li>" +
-                    "<li>smartConnectionChannelName (required)：智能连接线路名字；</li>" +
-                    "<li>smartConnectionChannelFlag (required)：智能连接线路国旗；</li>" +
-                    "<li>smartConnectionChannelSignalLevel (required)：智能连接线路信号级；</li>" +
-                    "</ul>",
+            notes = "123",
             authorizations = @Authorization("Bearer"))
-    @PostMapping(value = "/channels/{id:\\-1|\\d+}/connect1", produces = APPLICATION_JSON_VALUE, headers = {"api-version=v1.0", "Authorization"})
-    public String queryWordCount(@RequestBody String word) {
-
+    @PostMapping(value = "/channels/{id:\\-1|\\d+}/connect", produces = APPLICATION_JSON_VALUE, headers = {"api-version=v1.0"})
+    public String queryWordCount(@PathVariable String id) {
+        System.out.println("--licg---     function2 :  -----");
         return "SUCESS";
     }
 }
