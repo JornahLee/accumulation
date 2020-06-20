@@ -46,9 +46,9 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>5.0.3</version>
+            <version>5.2.1</version>
         </dependency>
-<!--        flayway db-->
+        <!--        flayway db-->
 
     </dependencies>
 
