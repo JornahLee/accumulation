@@ -1,13 +1,13 @@
-package com.jornah.elasticsearch;
+package com.jornah.elasticsearchdemo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ElasticsearchApplication {
+public class ElasticsearchDemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ElasticsearchApplication.class, args);
+        SpringApplication.run(ElasticsearchDemoApplication.class, args);
     }
 
 }
