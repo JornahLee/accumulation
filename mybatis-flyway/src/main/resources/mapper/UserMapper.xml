@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jornah.mybatisdemo.mapper.UserMapper">
-    <resultMap id="userResult" type="com.jornah.mybatisdemo.entity.User">
+    <cache/>
+    <resultMap id="userResult" type="user">
         <id column="id" property="id"/>
         <id column="first_name" property="firstName"/>
         <id column="last_name" property="lastName"/>
         <id column="birth_place" property="birthPlace"/>
     </resultMap>
-    <select id="findUserInfo" resultType="user">
+    <select id="findUserInfo" resultType="user" useCache="true">
     select *  from `user` where id=#{id};
   </select>
-<!--    <insert id="addUserInfo" parameterType="user">-->
-<!--  	insert into user (id, name-->
-<!--      )-->
-<!--    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}-->
-<!--      )-->
-<!--  </insert>-->
-<!--    <delete id="delUserInfo" parameterType="java.lang.Integer">-->
-<!--   delete from user where id = #{id,jdbcType=INTEGER}-->
-<!--  </delete>-->
+    <!--    主键回填 ,方法返回值为插入条数， 但是主键已经回填至传入的entity中-->
+    <insert id="addUser" keyProperty="id" useGeneratedKeys="true">
+    insert into user (first_name,last_name,birth_place)
+     values (#{firstName},#{lastName},#{birthPlace})
+    </insert>
+
+    <update id="updateUser">
+        update `user` set first_name=#{firstName},last_name=#{lastName},birth_place=#{birthPlace} where id=#{id}
+    </update>
+    <!--    <delete id="delUserInfo" parameterType="java.lang.Integer">-->
+    <!--   delete from user where id = #{id,jdbcType=INTEGER}-->
+    <!--  </delete>-->
 
 </mapper>

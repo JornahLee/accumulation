@@ -1,8 +1,9 @@
 package com.jornah.mybatisdemo.entity;
 
+import java.io.Serializable;
 import java.time.Instant;
 
-public class User {
+public class User implements Serializable {
     private Long id;
     private String firstName;
     private String lastName;
