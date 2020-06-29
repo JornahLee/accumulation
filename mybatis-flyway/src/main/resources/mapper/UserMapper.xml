@@ -9,9 +9,6 @@
     </resultMap>
     <sql id="userColumns">
         ${alias}.id,${alias}.first_name,${alias}.last_name,${alias}.birth_place
-        <!--            <otherwise>-->
-        <!--                id,first_name,last_name,birth_place-->
-        <!--            </otherwise>-->
     </sql>
 
     <select id="findUserInfo" resultMap="userResult">
@@ -30,18 +27,17 @@
     </select>
 
 
-    <!--    <include refid="all_column">-->
-    <!--        <property name="alias" value="t1"/>-->
-    <!--    </include>-->
+    <select id="findUserInfo" resultType="user" useCache="true">
+    select *  from `user` where id=#{id};
+  </select>
+    <!--    主键回填 ,方法返回值为插入条数， 但是主键已经回填至传入的entity中-->
+    <insert id="addUser" keyProperty="id" useGeneratedKeys="true">
+    insert into user (first_name,last_name,birth_place)
+     values (#{firstName},#{lastName},#{birthPlace})
+    </insert>
 
-    <!--    <insert id="addUserInfo" parameterType="user">-->
-    <!--  	insert into user (id, name-->
-    <!--      )-->
-    <!--    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}-->
-    <!--      )-->
-    <!--  </insert>-->
-    <!--    <delete id="delUserInfo" parameterType="java.lang.Integer">-->
-    <!--   delete from user where id = #{id,jdbcType=INTEGER}-->
-    <!--  </delete>-->
+    <update id="updateUser">
+        update `user` set first_name=#{firstName},last_name=#{lastName},birth_place=#{birthPlace} where id=#{id}
+    </update>
 
 </mapper>

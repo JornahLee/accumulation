@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper {
     User findUserInfo(Long id);
+    Long addUser(User user);
+    void updateUser(User user);
     User findUserByCond(User user);
 }
