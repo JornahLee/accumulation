@@ -7,17 +7,41 @@
         <id column="last_name" property="lastName"/>
         <id column="birth_place" property="birthPlace"/>
     </resultMap>
-    <select id="findUserInfo" resultType="user">
-    select *  from `user` where id=#{id};
-  </select>
-<!--    <insert id="addUserInfo" parameterType="user">-->
-<!--  	insert into user (id, name-->
-<!--      )-->
-<!--    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}-->
-<!--      )-->
-<!--  </insert>-->
-<!--    <delete id="delUserInfo" parameterType="java.lang.Integer">-->
-<!--   delete from user where id = #{id,jdbcType=INTEGER}-->
-<!--  </delete>-->
+    <sql id="userColumns">
+        ${alias}.id,${alias}.first_name,${alias}.last_name,${alias}.birth_place
+        <!--            <otherwise>-->
+        <!--                id,first_name,last_name,birth_place-->
+        <!--            </otherwise>-->
+    </sql>
+
+    <select id="findUserInfo" resultMap="userResult">
+        select
+        <include refid="userColumns">
+            <property name="alias" value="u"/>
+        </include>
+        from `user` as u where id=#{id};
+    </select>
+    <select id="findUserByCond" resultMap="userResult" parameterType="user">
+        select
+        <include refid="userColumns">
+            <property name="alias" value="u"/>
+        </include>
+        from `user` as u where id=#{id};
+    </select>
+
+
+    <!--    <include refid="all_column">-->
+    <!--        <property name="alias" value="t1"/>-->
+    <!--    </include>-->
+
+    <!--    <insert id="addUserInfo" parameterType="user">-->
+    <!--  	insert into user (id, name-->
+    <!--      )-->
+    <!--    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}-->
+    <!--      )-->
+    <!--  </insert>-->
+    <!--    <delete id="delUserInfo" parameterType="java.lang.Integer">-->
+    <!--   delete from user where id = #{id,jdbcType=INTEGER}-->
+    <!--  </delete>-->
 
 </mapper>

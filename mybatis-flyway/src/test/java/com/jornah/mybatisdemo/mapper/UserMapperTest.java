@@ -17,7 +17,11 @@ class UserMapperTest {
 
     @Test
     public void test1(){
-        User userInfo = userMapper.findUserInfo(1L);
+        User user=new User();
+        user.setFirstName("2131");
+        user.setLastName("23234234");
+        user.setId(1L);
+        User userInfo = userMapper.findUserByCond(user);
         System.out.println("--licg---     userInfo : " + userInfo + "    -----");
     }
 }

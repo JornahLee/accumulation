@@ -50,6 +50,14 @@
         </dependency>
         <!--        flayway db-->
 
+<!--        my util kit-->
+        <dependency>
+            <groupId>com.jornah</groupId>
+            <artifactId>util-kit</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+<!--        my util kit-->
+
     </dependencies>
 
     <build>
