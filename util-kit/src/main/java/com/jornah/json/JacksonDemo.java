@@ -1,4 +1,4 @@
-package com.jornah.util.json;
+package com.jornah.json;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;

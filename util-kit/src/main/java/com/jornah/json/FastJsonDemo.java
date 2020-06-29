@@ -1,4 +1,4 @@
-package com.jornah.util.json;
+package com.jornah.json;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jornah.util.MapUtil;

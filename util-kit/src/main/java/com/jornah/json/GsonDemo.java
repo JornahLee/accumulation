@@ -1,4 +1,4 @@
-package com.jornah.util.json;
+package com.jornah.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
