@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jornah.mybatisdemo.mapper.UserDao">
+  <resultMap id="BaseResultMap" type="com.jornah.mybatisdemo.entity.User">
+    <id column="user_id" jdbcType="INTEGER" property="id" />
+    <result column="user_first_name" jdbcType="VARCHAR" property="firstName" />
+    <result column="user_last_name" jdbcType="VARCHAR" property="lastName" />
+    <result column="user_birthday" jdbcType="DATE" property="birthday" />
+    <result column="user_birth_place" jdbcType="VARCHAR" property="birthPlace" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user.id as user_id, user.first_name as user_first_name, user.last_name as user_last_name, 
+    user.birthday as user_birthday, user.birth_place as user_birth_place
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user user
+    where user.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.jornah.mybatisdemo.entity.User" useGeneratedKeys="true">
+    insert into user (first_name, last_name, birthday, 
+      birth_place)
+    values (#{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
+      #{birthPlace,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.jornah.mybatisdemo.entity.User" useGeneratedKeys="true">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="firstName != null">
+        first_name,
+      </if>
+      <if test="lastName != null">
+        last_name,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="birthPlace != null">
+        birth_place,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="firstName != null">
+        #{firstName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastName != null">
+        #{lastName,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="birthPlace != null">
+        #{birthPlace,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jornah.mybatisdemo.entity.User">
+    update user
+    <set>
+      <if test="firstName != null">
+        first_name = #{firstName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastName != null">
+        last_name = #{lastName,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="birthPlace != null">
+        birth_place = #{birthPlace,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jornah.mybatisdemo.entity.User">
+    update user
+    set first_name = #{firstName,jdbcType=VARCHAR},
+      last_name = #{lastName,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      birth_place = #{birthPlace,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

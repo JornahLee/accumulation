@@ -18,3 +18,7 @@
 
 fly会判断数据库结构版本与history存储是否一致
 **大致原理**
+
+# free mybatis plugin
+方便mapper与xml快速切换
+并且集成了mybatis generator（database选项卡右键对应的数据库表-> mybatis generator）
