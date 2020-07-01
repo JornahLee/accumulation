@@ -8,7 +8,7 @@ public class DbTable {
     private String tableName;
     private Set<String> columns;
 
-    public DbTable(String dbName, String tableName, TreeSet<String> columns) {
+    public DbTable(String dbName, String tableName, Set<String> columns) {
         this.dbName = dbName;
         this.tableName = tableName;
         this.columns = columns;
