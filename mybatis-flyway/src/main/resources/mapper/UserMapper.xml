@@ -26,10 +26,6 @@
         from `user` as u where id=#{id};
     </select>
 
-
-    <select id="findUserInfo" resultType="user" useCache="true">
-    select *  from `user` where id=#{id};
-  </select>
     <!--    主键回填 ,方法返回值为插入条数， 但是主键已经回填至传入的entity中-->
     <insert id="addUser" keyProperty="id" useGeneratedKeys="true">
     insert into user (first_name,last_name,birth_place)

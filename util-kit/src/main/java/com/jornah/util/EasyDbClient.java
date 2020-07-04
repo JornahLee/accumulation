@@ -32,7 +32,7 @@ public class EasyDbClient {
         Class.forName("com.mysql.cj.jdbc.Driver");
         String url="jdbc:mysql://118.25.187.1:3306/sql_practice";
         String name="root";
-        String pwd="mimamysql614";
+        String pwd="${MYSQL_PWD}";
         String sql="select avg(degree) avgDegree from score where sno='123'";
 
         try (Connection connection = DriverManager.getConnection(url, name, pwd)) {

@@ -106,7 +106,7 @@ public class DbTableExtractUtil {
         Class.forName("com.mysql.cj.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/panda_test_dev?serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8";
         String name = "root";
-        String pwd = "mimamysql614";
+        String pwd = "${MYSQL_PWD}";
         String sql = "SELECT table_name, column_name FROM information_schema.COLUMNS " +
                 "WHERE table_schema = 'panda_test_dev';";
         Map<String, List<String>> allTable = new TreeMap<>();
