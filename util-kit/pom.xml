@@ -110,6 +110,17 @@
         </dependency>
 <!--        tx cloud sdk-->
 
+
+<!--        JSqlParser  -->
+        <!-- https://mvnrepository.com/artifact/com.github.jsqlparser/jsqlparser -->
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+        <!--        JSqlParser-->
+
     </dependencies>
 
 
