@@ -1,4 +1,4 @@
-package com.jornah.util.easyexcel;
+package com.jornah.easyexcel;
 
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.ExcelWriter;
