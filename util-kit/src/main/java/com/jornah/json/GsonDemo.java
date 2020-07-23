@@ -3,13 +3,16 @@ package com.jornah.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.jornah.pojo.TestGson;
+import com.jornah.util.GsonExclusionStrategy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GsonDemo {
     public static void main(String[] args) {
-        deSerialize();
+        excludeFieldByAnnotation();
     }
 
     private static void fun1() {
@@ -30,7 +33,8 @@ public class GsonDemo {
         String json = "[{\"id\":16,\"title\":\"title  这是 US 的 通用端的 英语\"},{\"id\":19,\"title\":\"title  这是 US 安卓端的 的英语\"}]";
         // Object o = gson.fromJson(json, new TypeToken<ArrayList<Item>>() {}.getType());
         List<Item> usersList = gson.fromJson(json,
-                new TypeToken<List<Item>>(){}.getType());
+                new TypeToken<List<Item>>() {
+                }.getType());
         // Object fromJson = gson.fromJson(json, typeOfT);
         usersList.forEach(System.out::println);
 
@@ -63,5 +67,15 @@ public class GsonDemo {
                     ", title='" + title + '\'' +
                     '}';
         }
+    }
+
+    public static void excludeFieldByAnnotation() {
+        GsonBuilder builder = new GsonBuilder();
+        builder.setExclusionStrategies(new GsonExclusionStrategy(Arrays.asList("age")));
+        Gson gson = builder.create();
+        TestGson lic = new TestGson(1L, "lic", 11);
+        String json = gson.toJson(lic);
+        System.out.println("--licg---     json : " + json + "    -----");
+
     }
 }
