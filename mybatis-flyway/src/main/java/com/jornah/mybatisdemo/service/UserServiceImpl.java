@@ -10,9 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserServiceImpl {
 
-    @Value("${com.mysql.pwd}")
-    String value;
-
     @Autowired
     private UserMapper userMapper;
 
@@ -23,10 +20,6 @@ public class UserServiceImpl {
 
     @Transactional
     public void trans() {
-        System.out.println("--licg---     value : " + value + "    -----");
-        System.out.println();
-        System.out.println();
-        System.out.println();
         User userInfo = userMapper.findUserInfo(1L);
         System.out.println("--first time---     userInfo : " + userInfo + "    -----\n");
 
@@ -35,12 +28,21 @@ public class UserServiceImpl {
 
         userInfo.setFirstName("updated value");
         userMapper.updateUser(userInfo);
-        // System.out.println("--update---     userInfo : " + userInfo + "    -----\n");
 
         userInfo = userMapper.findUserInfo(1L);
         System.out.println("--get after update---     userInfo : " + userInfo + "    -----\n");
+        noTrans();
 
-        int i = 10 / 0;
+    }
+
+    public void noTrans() {
+        User userInfo = userMapper.findUserInfo(1L);
+        System.out.println("--noTrans first time---     userInfo : " + userInfo + "    -----\n");
+
+        userInfo = userMapper.findUserInfo(1L);
+        System.out.println("--noTrans again---     userInfo : " + userInfo + "    -----\n");
+
+
     }
 
 }

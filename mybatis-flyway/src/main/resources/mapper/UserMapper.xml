@@ -32,8 +32,31 @@
      values (#{firstName},#{lastName},#{birthPlace})
     </insert>
 
+    <insert id="insertUser" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO `user` VALUES (#{id},#{firstName}, #{lastName},now(), 'insert')
+        ON DUPLICATE KEY UPDATE first_name=#{firstName}, birth_place='update'
+    </insert>
+
+    <insert id="replaceUser" keyProperty="id" >
+        replace INTO `user` VALUES (#{id},#{firstName}, #{lastName},now(), 'replace');
+
+    </insert>
+
     <update id="updateUser">
         update `user` set first_name=#{firstName},last_name=#{lastName},birth_place=#{birthPlace} where id=#{id}
     </update>
+    <delete id="truncateTable">
+        truncate `user`
+    </delete>
+
+
+    <select id="findBy" resultMap="userResult" >
+        select * from user where id=#{id}
+        <if test="fetchSize > 0">
+            limit #{fetchSize}
+        </if>
+    </select>
+
+
 
 </mapper>
