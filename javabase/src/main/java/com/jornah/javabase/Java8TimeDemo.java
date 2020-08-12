@@ -4,21 +4,21 @@ import java.time.Instant;
 
 import static java.time.Instant.now;
 
-public class InstantDemo {
+public class Java8TimeDemo {
     public static void main(String[] args) {
         // <
 
         // a =1 , b=2
         // a < b  , t
         // b < a  , f
-        Instant tokenCreateAt=now();
-        Instant jwtCreateAt=now().minusSeconds(1);
+        Instant dbTokenCreateAt=now().minusSeconds(1);
+        Instant jwtCreateAt=now();
         // 没过期
-        boolean isBefore = jwtCreateAt.isBefore(tokenCreateAt);
-        if(isBefore){
+        boolean isExpire = jwtCreateAt.isBefore(dbTokenCreateAt);
+        if(isExpire){
             System.out.println("--licg---     guoqi  -----");
         }
 
-        System.out.println("--licg---     isBefore : " + isBefore + "    -----");
+        System.out.println("--licg---     isExpire : " + isExpire + "    -----");
     }
 }
