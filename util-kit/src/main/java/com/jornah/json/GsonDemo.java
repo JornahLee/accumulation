@@ -2,17 +2,39 @@ package com.jornah.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.jornah.pojo.TestGson;
 import com.jornah.util.GsonExclusionStrategy;
 
+import java.lang.reflect.Type;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class GsonDemo {
     public static void main(String[] args) {
-        excludeFieldByAnnotation();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Instant.class, (JsonSerializer) (src, typeOfSrc, context) -> {
+            if (typeOfSrc.equals(Instant.class)) {
+                System.out.println("--licg---     typeOfSrc : " + typeOfSrc + "    -----");
+                Instant instant = (Instant) src;
+                String format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault()).format(instant);
+                return new JsonPrimitive(format);
+            }
+            return new JsonPrimitive(src.toString());
+        });
+        Gson gson = builder.create();
+        String s = gson.toJson(Instant.now());
+        System.out.println("--licg---     s : " + s + "    -----");
     }
 
     private static void fun1() {
@@ -38,6 +60,21 @@ public class GsonDemo {
         // Object fromJson = gson.fromJson(json, typeOfT);
         usersList.forEach(System.out::println);
 
+    }
+    public static class ForTest{
+        String user_id;
+
+        public ForTest(String user_id) {
+            this.user_id = user_id;
+        }
+
+        public String getUser_id() {
+            return user_id;
+        }
+
+        public void setUser_id(String user_id) {
+            this.user_id = user_id;
+        }
     }
 
     public class Item {
