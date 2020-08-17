@@ -1,8 +1,7 @@
-package com.jornah.util;
+package com.jornah.mybatisdemo.mapper.interceptor;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.ExpressionVisitor;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.ItemsList;
@@ -12,29 +11,66 @@ import net.sf.jsqlparser.expression.operators.relational.NamedExpressionList;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.delete.Delete;
 import net.sf.jsqlparser.statement.insert.Insert;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SelectBody;
 import net.sf.jsqlparser.statement.select.SubSelect;
-import net.sf.jsqlparser.statement.update.Update;
-import net.sf.jsqlparser.util.TablesNamesFinder;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.cache.CacheKey;
+import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Intercepts;
+import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Plugin;
+import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.Properties;
 
-/**
- * SQL字符串 解析为 对象
- * @author  licong
- * @date  2020/7/6 下午4:45
- */
-public class SQLParserDemo {
-    public static void main(String[] args) throws JSQLParserException {
+@Component
+@Intercepts({@org.apache.ibatis.plugin.Signature(
+        type = Executor.class,
+        method = "query",
+        args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}
+)})
+public class AddConditionInterceptor implements Interceptor {
 
-        String insertSql = "insert into users(id,name,pwd) values(1,2,3)";
-        // String selectSql = "select d,ff,ff from users join devices where id in (1,2) group by id Order by id limit 1,100";
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        resetSql(invocation);
+        return invocation.proceed();
+    }
 
-        Statement parse = CCJSqlParserUtil.parse(insertSql);
+    @Override
+    public Object plugin(Object o) {
+        return Plugin.wrap(o, this);
+    }
+
+    @Override
+    public void setProperties(Properties properties) {
+    }
+
+    private void resetSql(Invocation invocation) throws JSQLParserException, NoSuchFieldException, IllegalAccessException {
+        final Object[] args = invocation.getArgs();
+        MappedStatement mappedStatement = (MappedStatement)invocation.getArgs()[0];
+        BoundSql boundSql = mappedStatement.getBoundSql(args[1]);
+        if (StringUtils.isNotEmpty(boundSql.getSql())) {
+            Field field = boundSql.getClass().getDeclaredField("sql");
+            field.setAccessible(true);
+            field.set(boundSql, resetSql(boundSql.getSql()));
+        }
+    }
+
+    /*自定义SQL*/
+    private String resetSql(String sql) throws JSQLParserException {
+        Statement parse = CCJSqlParserUtil.parse(sql);
         if (parse instanceof Insert) {
             Insert insert = (Insert) parse;
             String tableName = insert.getTable().getName();
@@ -59,22 +95,19 @@ public class SQLParserDemo {
                 public void visit(MultiExpressionList multiExprList) {
                 }
             });
-            System.out.println("表名:"+tableName+" 列名:"+columns+" 属性:"+itemsList);
+            System.out.println("表名:" + tableName + " 列名:" + columns + " 属性:" + itemsList);
         }
         if (parse instanceof Select) {
             SelectBody selectBody = ((Select) parse).getSelectBody();
             PlainSelect select = (PlainSelect) selectBody;
             Expression where = select.getWhere();
-            String newCond=where+"and product_id= "+ 1;
-            // select.setWhere();
+            String newCond = where + "and product_id= " + 1;
             Expression newWhere = CCJSqlParserUtil.parseCondExpression(newCond);
-            // where.accept();
             select.setWhere(newWhere);
             System.out.println("--licg---     select : " + select + "    -----");
 
         }
-        // 注意不用id 进行delete或者update的情况
-
+        return null;
     }
 
 }

@@ -18,6 +18,16 @@ public class User implements Serializable {
 
     private String birthPlace;
 
+    private int productId;
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -60,7 +70,15 @@ public class User implements Serializable {
         this.birthPlace = birthPlace;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthday=" + birthday +
+                ", birthPlace='" + birthPlace + '\'' +
+                ", productId=" + productId +
+                '}';
     }
 }
