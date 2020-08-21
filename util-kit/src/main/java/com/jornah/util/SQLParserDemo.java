@@ -2,7 +2,6 @@ package com.jornah.util;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.ExpressionVisitor;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.ItemsList;
@@ -13,7 +12,6 @@ import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.delete.Delete;
 import net.sf.jsqlparser.statement.insert.Insert;
 import net.sf.jsqlparser.statement.select.FromItemVisitor;
 import net.sf.jsqlparser.statement.select.LateralSubSelect;
@@ -28,9 +26,7 @@ import net.sf.jsqlparser.statement.select.SubSelect;
 import net.sf.jsqlparser.statement.select.TableFunction;
 import net.sf.jsqlparser.statement.select.ValuesList;
 import net.sf.jsqlparser.statement.select.WithItem;
-import net.sf.jsqlparser.statement.update.Update;
 import net.sf.jsqlparser.statement.values.ValuesStatement;
-import net.sf.jsqlparser.util.TablesNamesFinder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,5 +169,6 @@ public class SQLParserDemo {
 
         }
     }
+
 
 }
