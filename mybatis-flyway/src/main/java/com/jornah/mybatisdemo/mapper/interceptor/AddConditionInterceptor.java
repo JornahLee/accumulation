@@ -10,36 +10,39 @@ import net.sf.jsqlparser.expression.operators.relational.MultiExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.NamedExpressionList;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.insert.Insert;
+import net.sf.jsqlparser.statement.select.FromItemVisitor;
+import net.sf.jsqlparser.statement.select.LateralSubSelect;
+import net.sf.jsqlparser.statement.select.ParenthesisFromItem;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SelectBody;
+import net.sf.jsqlparser.statement.select.SubJoin;
 import net.sf.jsqlparser.statement.select.SubSelect;
+import net.sf.jsqlparser.statement.select.TableFunction;
+import net.sf.jsqlparser.statement.select.ValuesList;
+import net.sf.jsqlparser.util.TablesNamesFinder;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.cache.CacheKey;
-import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
-import org.apache.ibatis.session.ResultHandler;
-import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.plugin.Signature;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.sql.Connection;
 import java.util.List;
 import java.util.Properties;
 
+// mybatis 拦截器，只要交给spring管理，就会自动被注册，所以在配置类里配置时候只能使用spring容器里的，
+// 如果重新new的话，则会重复注册拦截器，导致重复拦截
 @Component
-@Intercepts({@org.apache.ibatis.plugin.Signature(
-        type = Executor.class,
-        method = "query",
-        args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}
-)})
+@Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
 public class AddConditionInterceptor implements Interceptor {
 
     @Override
@@ -58,9 +61,9 @@ public class AddConditionInterceptor implements Interceptor {
     }
 
     private void resetSql(Invocation invocation) throws JSQLParserException, NoSuchFieldException, IllegalAccessException {
-        final Object[] args = invocation.getArgs();
-        MappedStatement mappedStatement = (MappedStatement)invocation.getArgs()[0];
-        BoundSql boundSql = mappedStatement.getBoundSql(args[1]);
+        StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
+        BoundSql boundSql = statementHandler.getBoundSql();
+
         if (StringUtils.isNotEmpty(boundSql.getSql())) {
             Field field = boundSql.getClass().getDeclaredField("sql");
             field.setAccessible(true);
@@ -84,7 +87,7 @@ public class AddConditionInterceptor implements Interceptor {
 
                 @Override
                 public void visit(ExpressionList expressionList) {
-                    expressionList.getExpressions().add(new LongValue(1));
+                    expressionList.getExpressions().add(new LongValue(2));
                 }
 
                 @Override
@@ -95,19 +98,54 @@ public class AddConditionInterceptor implements Interceptor {
                 public void visit(MultiExpressionList multiExprList) {
                 }
             });
-            System.out.println("表名:" + tableName + " 列名:" + columns + " 属性:" + itemsList);
         }
         if (parse instanceof Select) {
             SelectBody selectBody = ((Select) parse).getSelectBody();
             PlainSelect select = (PlainSelect) selectBody;
+            select.getFromItem().accept(new FromItemVisitor() {
+                @Override
+                public void visit(Table tableName) {
+                    tableName.setName("gaiguo_de_biao");
+                }
+
+                @Override
+                public void visit(SubSelect subSelect) {
+
+                }
+
+                @Override
+                public void visit(SubJoin subjoin) {
+
+                }
+
+                @Override
+                public void visit(LateralSubSelect lateralSubSelect) {
+
+                }
+
+                @Override
+                public void visit(ValuesList valuesList) {
+
+                }
+
+                @Override
+                public void visit(TableFunction tableFunction) {
+
+                }
+
+                @Override
+                public void visit(ParenthesisFromItem aThis) {
+
+                }
+            });
             Expression where = select.getWhere();
-            String newCond = where + "and product_id= " + 1;
+            String newCond = where + "and product_id= " + 2;
             Expression newWhere = CCJSqlParserUtil.parseCondExpression(newCond);
             select.setWhere(newWhere);
-            System.out.println("--licg---     select : " + select + "    -----");
 
         }
-        return null;
+        System.out.println("--licg---     parse : " + parse + "    -----");
+        return parse.toString();
     }
 
 }
