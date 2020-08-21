@@ -18,10 +18,25 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class GsonDemo {
     public static void main(String[] args) {
+        Item item=new Item();
+        item.setId("1");
+        item.setTheFlag(true);
+        item.setTitle("sdfsdf");
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(item);
+        System.out.println(json);
+        Item dItem = gson.fromJson(json, Item.class);
+        System.out.println("--licg---     aBoolean : " + dItem + "    -----");
+
+
+    }
+
+    private static void diyStretory() {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Instant.class, (JsonSerializer) (src, typeOfSrc, context) -> {
             if (typeOfSrc.equals(Instant.class)) {
@@ -77,9 +92,20 @@ public class GsonDemo {
         }
     }
 
-    public class Item {
+    public static class Item {
         String id;
         String title;
+        boolean flag= false;
+        public boolean getFlag() {
+            return flag;
+        }
+
+        public void isFlag(boolean flag) {
+            this.flag = flag;
+        }
+        public void setTheFlag(boolean flag) {
+            this.flag = flag;
+        }
 
         public String getId() {
             return id;
@@ -102,6 +128,7 @@ public class GsonDemo {
             return "Item{" +
                     "id='" + id + '\'' +
                     ", title='" + title + '\'' +
+                    ", flag=" + flag +
                     '}';
         }
     }
