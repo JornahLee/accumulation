@@ -12,8 +12,12 @@ import java.util.Set;
 
 public class MessTest {
     public static void main(String[] args) {
-        int length = "f99ad70c-dc4b-11ea-8fd3-72bf65bb7d3f".length();
-        System.out.println("--licg---     length : " + length + "    -----");
+        String str=",sfsdf, sdfsdf ,sdf ,";
+        String[] split = str.split(",");
+        for (String s : split) {
+            System.out.println("--licg---     s : " + s.trim() + "    -----");
+        }
+
 
     }
 

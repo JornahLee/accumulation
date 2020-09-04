@@ -3,6 +3,8 @@ package com.jornah.javabase;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -24,4 +26,10 @@ public class LambdaDemo {
         // sb.orElseGet(supplier)   不存在，则通过 supplier获取
     }
     // lambda 的
+
+    public void testFlatMap(){
+        List<String> strings = Arrays.asList("woshi shei", "woshi nidie", "woshi niba");
+        List<String> collect = strings.stream().flatMap(str -> Stream.of(str.split(" "))).collect(Collectors.toList());
+
+    }
 }

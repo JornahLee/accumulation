@@ -41,7 +41,7 @@ public class SQLParserDemo {
     public static void main(String[] args) throws JSQLParserException {
 
         // String insertSql = "insert into users(id,name,pwd) values(1,2,3)";
-        String selectSql = "select ff from users f ORDER BY d.id desc";
+        // String selectSql = "select ff from users f ORDER BY d.id desc";
         // String insertMultiple = "INSERT INTO orders (`order_number`, `subscription_id`, `package_id`, `device_type`, `price`, `quantity`, `amount`, `currency`, `package_detail`, `payment_detail`, `payment_number`, `order_status`, `user_id`, `purchase_type`, `created_at`, `updated_at`, `payment_method_id`, `source`, product_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         // CCJSqlParserUtil.parse("TRUNCATE TABLE `payment_methods`;");
         //order是保留关键字，导致解析出错。
@@ -49,7 +49,8 @@ public class SQLParserDemo {
         // String complexSql ="select * FROM topup_packages WHERE `subscription_plan` ->> '$.itunes-product-id'=1" ;
         // String complexSql ="select * FROM topup_packages WHERE `subscription_plan`  ->>  '$.\"itunes-product-id\"' = '1d' " ;
         // String complexSql ="select * FROM topup_packages WHERE JSON_EXTRACT(`subscription_plan` ,'$.itunes-product-id')= 1" ;
-        String testSql="INSERT INTO user_numbers(id) values(LAST_INSERT_ID()+1);" ;
+        // String testSql="INSERT INTO user_numbers(id) values(LAST_INSERT_ID()+1);" ;
+        String testSql="UPDATE users  SET expire_at=expire_at + ?,updated_at=now()  WHERE id in (?,?)" ;
         Statement parse = CCJSqlParserUtil.parse(testSql);
         if (parse instanceof Insert) {
             Insert insert = (Insert) parse;
