@@ -3,7 +3,12 @@ package com.jornah;
 import javafx.scene.input.TouchEvent;
 import org.apache.commons.lang3.RandomUtils;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -12,11 +17,16 @@ import java.util.Set;
 
 public class MessTest {
     public static void main(String[] args) {
-        String str=",sfsdf, sdfsdf ,sdf ,";
-        String[] split = str.split(",");
-        for (String s : split) {
-            System.out.println("--licg---     s : " + s.trim() + "    -----");
-        }
+        Instant value= Instant.now();
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .parseCaseInsensitive()
+                .appendInstant(0)
+                .toFormatter();
+
+        // formatter.withZone(ZoneId.of())
+        String format = formatter.format(value);
+        System.out.println("--licg---     value  : " + value + "    -----");
+        System.out.println("--licg---     format : " + format + "    -----");
 
 
     }
