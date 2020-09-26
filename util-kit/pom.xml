@@ -169,13 +169,13 @@
         </dependency>
         <!--        验证注解-->
 
-<!--emoji-java  将emoji表情转义为可见字符  -->
+        <!--emoji-java  将emoji表情转义为可见字符  -->
         <dependency>
             <groupId>com.vdurmont</groupId>
             <artifactId>emoji-java</artifactId>
             <version>5.1.1</version>
         </dependency>
-<!--        emoji-java    -->
+        <!--        emoji-java    -->
 
 
         <!--        jgit -->
@@ -186,6 +186,15 @@
             <version>5.9.0.202009080501-r</version>
         </dependency>
         <!--        jgit-->
+
+
+        <!--       flex markdown to html , which based on commonmark-->
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>0.62.2</version>
+        </dependency>
+        <!--        markdown to html-->
     </dependencies>
 
 
