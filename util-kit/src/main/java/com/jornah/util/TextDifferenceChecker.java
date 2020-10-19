@@ -5,6 +5,9 @@ import org.eclipse.jgit.diff.*;
 
 import java.io.*;
 
+import static com.jornah.util.TextDifferenceChecker.ChangeType.DELETE;
+import static com.jornah.util.TextDifferenceChecker.ChangeType.INSERT;
+
 public class TextDifferenceChecker {
 
 
@@ -30,13 +33,43 @@ public class TextDifferenceChecker {
         EditList diff = DiffAlgorithm.getAlgorithm(DiffAlgorithm.SupportedAlgorithm.MYERS).diff(RawTextComparator.DEFAULT, before, after);
 
         System.out.println("---------------------");
-        DiffFormatter diffFormatter = new DiffFormatter(System.out);
+        FileOutputStream diffOriginOut = new FileOutputStream(diffResult);
+        DiffFormatter diffFormatter = new DiffFormatter(diffOriginOut);
         diffFormatter.format(diff, before, after);
-
+        diffOriginOut.flush();
         System.out.println("---------------------");
         diff.forEach(edit -> System.out.println(edit.toString()));
         System.out.println("diff.size(): " + diff.size());
 
+        InputStreamReader isr = new InputStreamReader(new FileInputStream(diffResult));
+        BufferedReader br = new BufferedReader(isr);
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+            ChangeType type = gitChangeType(line);
+            sb.insert(0,"<p>");
+            sb.append("</p>");
+            if (type.equals(DELETE)) {
+                sb.insert(2, " style='background-color: red'");
+            } else if (type.equals(INSERT)) {
+                sb.insert(2, " style='background-color: green'");
+            }
+            System.out.println(sb);
+            sb.setLength(0);
+        }
+
+        // do {
+        //     line = br.readLine();
+        //     if (line.startsWith("-")) {
+        //         sb.insert(0,"<p style='background-color: red'>");
+        //         sb.append("</p>");
+        //     } else if (line.startsWith("+")) {
+        //         sb.insert(0,"<p style='background-color: green'>");
+        //         sb.append("</p>");
+        //     }
+        //     sb.setLength(0);
+        // } while (line != null);
 
         // InMemoryRepository repo = new InMemoryRepository.Builder().build();
         // Git git = new Git(repo);
@@ -46,6 +79,22 @@ public class TextDifferenceChecker {
         // CommitCommand commit = git.commit();
         // commit.setMessage("initial commit").call();
         // git.diff().call();
+    }
+
+    private static ChangeType gitChangeType(String source) {
+        if (source.startsWith("+")) {
+            return ChangeType.INSERT;
+        }
+        if (source.startsWith("-")) {
+            return DELETE;
+        }
+        return ChangeType.NONE;
+
+
+    }
+
+    public enum ChangeType {
+        INSERT,DELETE,NONE
     }
 
 }
