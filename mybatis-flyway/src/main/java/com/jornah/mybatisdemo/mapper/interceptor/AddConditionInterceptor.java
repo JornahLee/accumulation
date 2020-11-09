@@ -41,7 +41,7 @@ import java.util.Properties;
 
 // mybatis 拦截器，只要交给spring管理，就会自动被注册，所以在配置类里配置时候只能使用spring容器里的，
 // 如果重新new的话，则会重复注册拦截器，导致重复拦截
-@Component
+// @Component
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
 public class AddConditionInterceptor implements Interceptor {
 

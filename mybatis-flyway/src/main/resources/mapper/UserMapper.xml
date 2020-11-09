@@ -37,6 +37,21 @@
         ON DUPLICATE KEY UPDATE first_name=#{firstName}, birth_place='update'
     </insert>
 
+    <insert id="batchInsertUser"  parameterType="java.util.List">
+        INSERT INTO `user`(id,first_name,last_name,birthday,birth_place) VALUES
+        <foreach collection="list" item="user" separator=",">
+            (#{user.id},#{user.firstName}, #{user.lastName},now(), 'insert')
+        </foreach>
+
+    </insert>
+    <insert id="batchInsertUserWithSet"  parameterType="java.util.Set">
+        INSERT INTO `user`(id,first_name,last_name,birthday,birth_place) VALUES
+        <foreach collection="users" item="user" separator=",">
+            (#{user.id},#{user.firstName}, #{user.lastName},now(), 'insert')
+        </foreach>
+
+    </insert>
+
     <insert id="replaceUser" keyProperty="id" >
         replace INTO `user` VALUES (#{id},#{firstName}, #{lastName},now(), 'replace');
 

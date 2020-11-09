@@ -5,11 +5,10 @@ import java.util.Date;
 
 /**
  * user
- * @author 
+ *
+ * @author
  */
-public class User implements Serializable {
-    private Integer id;
-
+public class User extends BaseEntity implements Serializable {
     private String firstName;
 
     private String lastName;
@@ -29,14 +28,6 @@ public class User implements Serializable {
     }
 
     private static final long serialVersionUID = 1L;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -73,7 +64,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthday=" + birthday +

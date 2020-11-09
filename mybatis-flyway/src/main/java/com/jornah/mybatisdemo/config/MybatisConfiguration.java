@@ -23,9 +23,6 @@ import java.util.Properties;
 @Configuration
 public class MybatisConfiguration {
 
-    @Autowired
-    private AddConditionInterceptor addConditionInterceptor;
-
     @Bean
     public ConfigurationCustomizer mybatisConfigurationCustomizer() {
         return configuration -> {
