@@ -27,7 +27,7 @@ import java.util.Properties;
                 args = {MappedStatement.class, Object.class}
         )
 })
-@Component
+// @Component
 public class MybatisInterceptor implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
