@@ -1,6 +1,11 @@
 package com.jornah.javabase;
 
+import org.junit.jupiter.api.Test;
+
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 import static java.time.Instant.now;
 
@@ -20,5 +25,28 @@ public class Java8TimeDemo {
         }
 
         System.out.println("--licg---     isExpire : " + isExpire + "    -----");
+    }
+
+    /**
+     * Instant时间戳，精确秒后 x 位
+     */
+    @Test
+    public void instantAccurate(){
+        Instant value= Instant.now();
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .parseCaseInsensitive()
+                .appendInstant(0)
+                .toFormatter();
+
+        String format = formatter.format(value);
+        System.out.println("--licg---     value  : " + value + "    -----");
+        System.out.println("--licg---     format : " + format + "    -----");
+    }
+
+    public void dateFormat(){
+        Instant now = now();
+        String format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault())
+                .format(now);
+        System.out.println(format);
     }
 }
