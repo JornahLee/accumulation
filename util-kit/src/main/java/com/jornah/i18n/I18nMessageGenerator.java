@@ -3,15 +3,17 @@ package com.jornah.i18n;
 import com.jornah.interfaces.Translator;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.function.BiConsumer;
 
 public class I18nMessageGenerator {
     public static void main(String[] args) throws IOException {
-        File file = new File("/Users/licong/gitRepository/panda-api/api-boot/src/main/resources");
+        File file = new File("api-boot/src/main/resources");
         String[] targetLan = {"ar", "es", "fr", "in", "ja", "ko", "ru", "th", "tr"};
         String key = "";
         String value = "无效邀请码";
@@ -19,7 +21,11 @@ public class I18nMessageGenerator {
         i18nMessageGenerator.generateMessage(file, targetLan,
                 key, value,
                 new MyTranslator(), i18nMessageGenerator.append());
+
+
     }
+
+
 
     private void generateMessage(File targetDir, String[] targetLan,
                                  String i18key, String value,
@@ -37,6 +43,36 @@ public class I18nMessageGenerator {
             });
         }
         // Process exec = Runtime.getRuntime().exec(shell);
+    }
+    private void replaceMessage(File targetDir, String[] targetLan,
+                                 String i18key, String value,
+                                 Translator translator, BiConsumer<File, String> outType) {
+        File[] files = getTargetFiles(targetDir);
+        for (String lan : targetLan) {
+            Arrays.stream(files).forEach(file -> {
+                if (file.getName().contains("_" + lan + ".")) {
+                    String i18Result = getMsg(lan);
+                    String output = String.format("\n%s=%s\n", i18key, i18Result);
+                    // 指定输出方式，自定义输出位置
+                    outType.accept(file, output);
+                    System.out.println(lan + ": " + output + "\n");
+                }
+            });
+        }
+        // Process exec = Runtime.getRuntime().exec(shell);
+    }
+
+    private String getMsg(String lan) {
+        //Map<String,String> i18LanMapGoogleLan
+
+        Properties prop = new Properties();
+        try {
+            FileReader fr = new FileReader("");
+            prop.load(fr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return prop.getProperty(lan);
     }
 
     private BiConsumer<File, String> append() {
