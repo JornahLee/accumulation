@@ -111,6 +111,14 @@
         </dependency>
         <!--二维码-->
 
+        <!--        表达式计算-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-jexl</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <!--        表达式计算-->
+
 
         <!--        tx cloud sdk-->
         <dependency>
