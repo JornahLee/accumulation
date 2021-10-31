@@ -1,9 +1,12 @@
 package com.jornah.javabase;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
@@ -27,9 +30,15 @@ public class LambdaDemo {
     }
     // lambda 的
 
-    public void testFlatMap(){
+    public void testFlatMap() {
         List<String> strings = Arrays.asList("woshi shei", "woshi nidie", "woshi niba");
         List<String> collect = strings.stream().flatMap(str -> Stream.of(str.split(" "))).collect(Collectors.toList());
+    }
 
+    @Test
+    public void intStreams() {
+        int[] arr = {1, 0, 11, 1222};
+        IntStream.iterate(0, i -> arr[i]).limit(3).forEach(System.out::println);
+//        IntStream.iterate(2, n -> n * 3).limit(10).forEach(System.out::println);
     }
 }
